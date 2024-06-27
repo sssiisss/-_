@@ -1,0 +1,74 @@
+CREATE TABLE `sales` (
+  `ID_Sales` int(20) NOT NULL AUTO_INCREMENT,
+  `S_ID_Car` int(10) NOT NULL,
+  `S_ID_Buyer` int(20) NOT NULL,
+  `Date_of_sale` datetime NOT NULL,
+  `S_ID_Price` int(10) NOT NULL,
+  PRIMARY KEY (`ID_Sales`),
+  KEY `S_ID_Car` (`S_ID_Car`),
+  KEY `S_ID_Buyer` (`S_ID_Buyer`),
+  KEY `S_ID_Price` (`S_ID_Price`),
+  CONSTRAINT `sales_ibfk_3` FOREIGN KEY (`S_ID_Price`) REFERENCES `orders` (`O_ID_price`),
+  CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`S_ID_Car`) REFERENCES `cars` (`ID_Car`),
+  CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`S_ID_Buyer`) REFERENCES `buyers` (`ID_Bayer`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `cars` (
+  `ID_Car` int(25) NOT NULL AUTO_INCREMENT,
+  `Brand` varchar(25) NOT NULL,
+  `Model` varchar(20) NOT NULL,
+  `Year_of_manufacture` date NOT NULL,
+  PRIMARY KEY (`ID_Car`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `orders` (
+  `ID_order` int(30) NOT NULL AUTO_INCREMENT,
+  `O_ID_Car` int(10) NOT NULL,
+  `O_ID_price` int(15) NOT NULL,
+  `Orde_date` datetime NOT NULL,
+  PRIMARY KEY (`ID_order`),
+  KEY `O_ID_price` (`O_ID_price`),
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`O_ID_price`) REFERENCES `rate` (`ID_Price`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `buyers` (
+  `ID_Bayer` int(11) NOT NULL AUTO_INCREMENT,
+  `First_name` varchar(20) NOT NULL,
+  `Surname` varchar(25) NOT NULL,
+  `Buyers_phone_number` int(25) NOT NULL,
+  `B_ID_Order` int(25) NOT NULL,
+  PRIMARY KEY (`ID_Bayer`) USING BTREE,
+  KEY `B_ID_Order` (`B_ID_Order`),
+  CONSTRAINT `buyers_ibfk_1` FOREIGN KEY (`B_ID_Order`) REFERENCES `orders` (`ID_order`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `supplier` (
+  `ID_Supplier` int(20) NOT NULL AUTO_INCREMENT,
+  `Name_supplier` varchar(25) NOT NULL,
+  `Contact_person` varchar(20) NOT NULL,
+  `Contact_phone` int(20) NOT NULL,
+  `Address_supplier` int(11) NOT NULL,
+  PRIMARY KEY (`ID_Supplier`) USING BTREE,
+  KEY `Address_supplier` (`Address_supplier`),
+  CONSTRAINT `supplier_ibfk_1` FOREIGN KEY (`Address_supplier`) REFERENCES `address` (`ID_Adress`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `address` (
+  `ID_Adress` int(25) NOT NULL AUTO_INCREMENT,
+  `City` varchar(25) NOT NULL,
+  `Street` varchar(25) NOT NULL,
+  `House` int(10) NOT NULL,
+  PRIMARY KEY (`ID_Adress`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `rate` (
+  `ID_Price` int(10) NOT NULL AUTO_INCREMENT,
+  `R_ID_Car` int(20) NOT NULL,
+  `R_ID_Supplier` int(10) NOT NULL,
+  `Price` int(20) NOT NULL,
+  PRIMARY KEY (`ID_Price`) USING BTREE,
+  KEY `R_ID_Car` (`R_ID_Car`),
+  KEY `R_ID_Supplier` (`R_ID_Supplier`),
+  CONSTRAINT `rate_ibfk_1` FOREIGN KEY (`R_ID_Car`) REFERENCES `cars` (`ID_Car`),
+  CONSTRAINT `rate_ibfk_2` FOREIGN KEY (`R_ID_Supplier`) REFERENCES `supplier` (`ID_Supplier`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=cp1251;
